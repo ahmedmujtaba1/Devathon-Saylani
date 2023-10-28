@@ -117,12 +117,26 @@
       }
 </style>
 
+
 <script>
     function readURL(input) {
       if (input.files && input.files[0]) {
         var formData = new FormData();
         formData.append('image', input.files[0]);
+        
+        var reader = new FileReader();
   
+      reader.onload = function(e) {
+        $('.image-upload-wrap').hide();
+  
+        $('.file-upload-image').attr('src', e.target.result);
+        $('.file-upload-content').show();
+  
+        $('.image-title').html(input.files[0].name);
+      };
+  
+      reader.readAsDataURL(input.files[0]);
+
         $.ajax({
           url: {% url "get_data" %},  
           type: 'POST',
@@ -135,7 +149,6 @@
   
             $('.image-title').html(input.files[0].name);
   
-            // Update accuracy and category
             $('.image-title-wrap h1:eq(0)').html('Accuracy: ' + data.accuracy);
             $('.image-title-wrap h1:eq(1)').html('Category: ' + data.category);
           },
@@ -177,7 +190,7 @@
     <div class="image-title-wrap">
       <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
     </div>
-    <div class="image-title">
+    <div class="image-title-wrap">
         <h1>Accuracy : </h1>
         <h1>Category : </h1>
       </div>
