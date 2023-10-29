@@ -1,0 +1,2 @@
+0 Infected
+1 Not Infected
